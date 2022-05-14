@@ -1,8 +1,7 @@
 ﻿using ECommerceApp.Application.Repositories;
-using ECommerceApp.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+// Test api
 namespace ECommerceApp.API.Controllers
 {
     [Route("api/[controller]")]
@@ -12,33 +11,27 @@ namespace ECommerceApp.API.Controllers
         private readonly IProductReadRepository _productReadRepository;
         private readonly IProductWriteRepository _productWriteRepository;
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        private readonly IOrderWriteRepository _orderWriteRepository;
+        private readonly IOrderReadRepository _orderReadRepository;
+
+        private readonly ICustomerWriteRepository _customerWriteRepository;
+
+
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
+            _orderWriteRepository = orderWriteRepository;
+            _customerWriteRepository = customerWriteRepository;
+            _orderReadRepository = orderReadRepository;
         }
 
         [HttpGet]
         public async Task Get()
         {
-            //await _productWriteRepository.AddRangeAsync(new List<Product>
-            //{
-            //    new() { Id = Guid.NewGuid(), Name = "Product 1",CreatedDate = DateTime.UtcNow, Price = 100, Stock = 10},
-            //    new() { Id = Guid.NewGuid(),Name = "Product 2",CreatedDate = DateTime.UtcNow,Price = 200,Stock = 20},
-            //    new() { Id = Guid.NewGuid(),Name = "Product 3",CreatedDate = DateTime.UtcNow,Price = 300,Stock = 30},
-            //});
-            //await _productWriteRepository.SaveChangesAsync();
-
-            var product = await _productReadRepository.GetByIdAsync("6f4bc130-55d1-472c-bfd7-87bcf539bfb8", false);
-            product.Name = "Mouseeee";
-            await _productWriteRepository.SaveChangesAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
-        {
-            var product = await _productReadRepository.GetByIdAsync(id);
-            return Ok(product);
+            var entity = await _orderReadRepository.GetByIdAsync("5aeb5f77-e080-41dd-91fa-c4a062e7d182");
+            entity.Description = "Cool onesssss";
+            await _orderWriteRepository.SaveChangesAsync();
         }
     }
 }
