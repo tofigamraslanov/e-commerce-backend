@@ -48,7 +48,7 @@ public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity
 
     public async Task<bool> RemoveAsync(string id)
     {
-        var entity = await Table.FindAsync(id);
+        var entity = await Table.FindAsync(Guid.Parse(id));
         return await RemoveAsync(entity!);
     }
 
