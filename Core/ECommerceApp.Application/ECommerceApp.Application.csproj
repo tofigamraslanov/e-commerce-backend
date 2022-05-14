@@ -10,4 +10,14 @@
     <ProjectReference Include="..\ECommerceApp.Domain\ECommerceApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\Customer\" />
+    <Folder Include="Repositories\Product\" />
+    <Folder Include="Repositories\Order\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+  </ItemGroup>
+
 </Project>
