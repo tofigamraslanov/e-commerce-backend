@@ -27,11 +27,9 @@ namespace ECommerceApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task Get()
+        public async Task<IActionResult> Get()
         {
-            var entity = await _orderReadRepository.GetByIdAsync("5aeb5f77-e080-41dd-91fa-c4a062e7d182");
-            entity.Description = "Cool onesssss";
-            await _orderWriteRepository.SaveChangesAsync();
+            return Ok("merhaba");
         }
     }
 }
