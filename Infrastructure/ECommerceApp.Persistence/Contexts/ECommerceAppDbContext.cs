@@ -27,6 +27,7 @@ public class ECommerceAppDbContext : DbContext
             {
                 EntityState.Added => entry.Entity.CreatedDate = DateTime.UtcNow,
                 EntityState.Modified => entry.Entity.UpdatedDate = DateTime.UtcNow,
+                _ => DateTime.UtcNow
             };
         }
 

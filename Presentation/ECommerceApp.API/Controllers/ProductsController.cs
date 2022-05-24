@@ -1,4 +1,6 @@
-﻿using ECommerceApp.Application.Repositories;
+﻿using System.Net;
+using ECommerceApp.Application.Repositories;
+using ECommerceApp.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
 // Test api
@@ -11,25 +13,54 @@ namespace ECommerceApp.API.Controllers
         private readonly IProductReadRepository _productReadRepository;
         private readonly IProductWriteRepository _productWriteRepository;
 
-        private readonly IOrderWriteRepository _orderWriteRepository;
-        private readonly IOrderReadRepository _orderReadRepository;
-
-        private readonly ICustomerWriteRepository _customerWriteRepository;
-
-
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository)
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
-            _orderWriteRepository = orderWriteRepository;
-            _customerWriteRepository = customerWriteRepository;
-            _orderReadRepository = orderReadRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public Task<IActionResult> GetAll()
         {
-            return Ok("merhaba");
+            return Task.FromResult<IActionResult>(Ok(_productReadRepository.GetAll(false)));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            return Ok(await _productReadRepository.GetByIdAsync(id, false));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateProductVm createProductVm)
+        {
+            await _productWriteRepository.AddAsync(new()
+            {
+                Name = createProductVm.Name,
+                Stock = createProductVm.Stock,
+                Price = createProductVm.Price
+            });
+            await _productWriteRepository.SaveChangesAsync();
+            return StatusCode((int)HttpStatusCode.Created);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateProductVm updateProductVm)
+        {
+            var product = await _productReadRepository.GetByIdAsync(updateProductVm.Id);
+            product.Name = updateProductVm.Name;
+            product.Stock = updateProductVm.Stock;
+            product.Price = updateProductVm.Price;
+            await _productWriteRepository.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _productWriteRepository.RemoveAsync(id);
+            await _productWriteRepository.SaveChangesAsync();
+            return Ok();
         }
     }
 }
