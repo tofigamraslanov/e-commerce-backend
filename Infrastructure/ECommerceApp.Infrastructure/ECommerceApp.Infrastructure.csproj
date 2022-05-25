@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Core\ECommerceApp.Application\ECommerceApp.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
+
 </Project>
