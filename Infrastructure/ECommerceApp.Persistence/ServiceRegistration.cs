@@ -8,7 +8,7 @@ namespace ECommerceApp.Persistence;
 
 public static class ServiceRegistration
 {
-    public static void AddPersistenceService(this IServiceCollection services)
+    public static void AddPersistenceServices(this IServiceCollection services)
     {
         services.AddDbContext<ECommerceAppDbContext>(options =>
             options.UseNpgsql(Configuration.ConnectionString));

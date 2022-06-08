@@ -1,11 +1,13 @@
 using ECommerceApp.Application.Validators.Products;
+using ECommerceApp.Infrastructure;
 using ECommerceApp.Infrastructure.Filters;
 using ECommerceApp.Persistence;
 using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddPersistenceService();
+builder.Services.AddInfrastructureServices();
+builder.Services.AddPersistenceServices();
 
 builder.Services
     .AddCors(options =>
@@ -29,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
 
 app.UseCors();
 

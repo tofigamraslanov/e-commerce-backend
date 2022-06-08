@@ -2,6 +2,7 @@
 using System.Net;
 using ECommerceApp.Application.Repositories;
 using ECommerceApp.Application.RequestParameters;
+using ECommerceApp.Application.Services;
 using ECommerceApp.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,30 +15,35 @@ namespace ECommerceApp.API.Controllers
     {
         private readonly IProductReadRepository _productReadRepository;
         private readonly IProductWriteRepository _productWriteRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IFileService _fileService;
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        public ProductsController(IProductWriteRepository productWriteRepository,
+            IProductReadRepository productReadRepository, IWebHostEnvironment webHostEnvironment, IFileService fileService)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
+            _webHostEnvironment = webHostEnvironment;
+            _fileService = fileService;
         }
 
         [HttpGet]
         public Task<IActionResult> GetAll([FromQuery] PaginationParameters paginationParameters)
         {
             var products = _productReadRepository
-                    .GetAll(false)
-                    .Skip(paginationParameters.Size * paginationParameters.Page)
-                    .Take(paginationParameters.Size)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Name,
-                        p.Stock,
-                        p.Price,
-                        p.CreatedDate,
-                        p.UpdatedDate
-                    }).ToList();
-            
+                .GetAll(false)
+                .Skip(paginationParameters.Size * paginationParameters.Page)
+                .Take(paginationParameters.Size)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Stock,
+                    p.Price,
+                    p.CreatedDate,
+                    p.UpdatedDate
+                }).ToList();
+
             var productsCount = _productReadRepository.GetAll(false).Count();
 
             return Task.FromResult<IActionResult>(Ok(new
@@ -82,6 +88,13 @@ namespace ECommerceApp.API.Controllers
         {
             await _productWriteRepository.RemoveAsync(id);
             await _productWriteRepository.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Upload()
+        {
+            await _fileService.UploadAsync("uploads/product-images", Request.Form.Files);
             return Ok();
         }
     }
