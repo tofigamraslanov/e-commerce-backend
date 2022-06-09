@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Repositories\File\" />
+    <Folder Include="Repositories\InvoiceFile\" />
+    <Folder Include="Repositories\ProductImageFile\" />
     <Folder Include="Services\" />
     <Folder Include="RequestParameters\" />
     <Folder Include="Repositories\Customer\" />

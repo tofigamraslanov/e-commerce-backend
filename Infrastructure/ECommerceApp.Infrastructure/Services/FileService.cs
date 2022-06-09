@@ -29,7 +29,7 @@ public class FileService : IFileService
             var newFileName = await FileRenameAsync(uploadPath, file.FileName);
 
             var result = await CopyFileAsync($"{uploadPath}\\{newFileName}", file);
-            data.Add((newFileName, $"{uploadPath}\\{newFileName}"));
+            data.Add((newFileName, $"{path}\\{newFileName}"));
             results.Add(result);
         }
 

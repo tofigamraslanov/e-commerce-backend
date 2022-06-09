@@ -13,6 +13,9 @@
   <ItemGroup>
     <Folder Include="Contexts\" />
     <Folder Include="Repositories\Customer\" />
+    <Folder Include="Repositories\File\" />
+    <Folder Include="Repositories\InvoiceFile\" />
+    <Folder Include="Repositories\ProductImageFile\" />
     <Folder Include="Repositories\Product\" />
     <Folder Include="Repositories\Order\" />
   </ItemGroup>
