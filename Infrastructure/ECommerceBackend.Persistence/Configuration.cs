@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace ECommerceBackend.Persistence;
 

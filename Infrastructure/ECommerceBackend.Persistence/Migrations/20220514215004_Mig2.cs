@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ECommerceApp.Persistence.Migrations
+namespace ECommerceBackend.Persistence.Migrations
 {
     public partial class Mig2 : Migration
     {
