@@ -12,8 +12,10 @@
 
   <ItemGroup>
     <Folder Include="Filters\" />
+    <Folder Include="Enums\" />
     <Folder Include="Operations\" />
-    <Folder Include="Services\" />
+    <Folder Include="Services\Storage\Local\" />
+    <Folder Include="Services\Storage\AWS\" />
   </ItemGroup>
 
 </Project>
