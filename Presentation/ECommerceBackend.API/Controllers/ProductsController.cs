@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using File = ECommerceBackend.Domain.Entities.File;
 
-// Test api
 namespace ECommerceBackend.API.Controllers
 {
     [Route("api/[controller]")]
