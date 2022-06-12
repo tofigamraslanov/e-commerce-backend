@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ECommerceBackend.Infrastructure.Services.Storage.Local;
 
-public class LocalStorage : ILocalStorage
+public class LocalStorage : Storage, ILocalStorage
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -24,10 +24,10 @@ public class LocalStorage : ILocalStorage
 
         foreach (var file in files)
         {
-            // var newFileName = await FileRenameAsync(uploadPath, file.FileName);
+            var newFileName = await FileRenameAsync(path, file.FileName, HasFile);
 
-            await CopyFileAsync($"{uploadPath}\\{file.Name}", file);
-            data.Add((file.Name, $"{path}\\{file.Name}"));
+            await CopyFileAsync($"{uploadPath}\\{newFileName}", file);
+            data.Add((newFileName, $"{path}\\{newFileName}"));
         }
 
         return data;
@@ -63,5 +63,4 @@ public class LocalStorage : ILocalStorage
             throw e;
         }
     }
-
 }
