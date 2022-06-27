@@ -12,8 +12,8 @@ builder.Services.AddInfrastructureServices();
 builder.Services.AddPersistenceServices();
 
 // builder.Services.AddStorage(StorageType.Local);
-builder.Services.AddStorage<LocalStorage>();
-// builder.Services.AddStorage<AzureStorage>();
+// builder.Services.AddStorage<LocalStorage>();
+builder.Services.AddStorage<AzureStorage>();
 
 builder.Services
     .AddCors(options =>

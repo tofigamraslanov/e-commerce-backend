@@ -30,7 +30,7 @@ public class AzureStorage : Storage, IAzureStorage
 
             var blobClient = _blobContainerClient.GetBlobClient(newFileName);
             await blobClient.UploadAsync(file.OpenReadStream());
-            data.Add((newFileName, containerName));
+            data.Add((newFileName, $"{containerName}/{newFileName}"));
         }
 
         return data;
