@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using ECommerceBackend.Domain.Entities.Common;
+﻿using ECommerceBackend.Domain.Entities.Common;
 
 namespace ECommerceBackend.Domain.Entities;
 

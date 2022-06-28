@@ -1,0 +1,39 @@
+﻿using ECommerceBackend.Application.Repositories;
+using MediatR;
+
+namespace ECommerceBackend.Application.Features.Products.Queries.GetAllProducts;
+
+public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQueryRequest, GetAllProductsQueryResponse>
+{
+    private readonly IProductReadRepository _productReadRepository;
+
+    public GetAllProductsQueryHandler(IProductReadRepository productReadRepository)
+    {
+        _productReadRepository = productReadRepository;
+    }
+
+    public async Task<GetAllProductsQueryResponse> Handle(GetAllProductsQueryRequest request, CancellationToken cancellationToken)
+    {
+        var products = _productReadRepository
+            .GetAll(false)
+            .Skip(request.PaginationParameters.Size * request.PaginationParameters.Page)
+            .Take(request.PaginationParameters.Size)
+            .Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.Stock,
+                p.Price,
+                p.CreatedDate,
+                p.UpdatedDate
+            }).ToList();
+
+        var productsCount = _productReadRepository.GetAll(false).Count();
+
+        return new()
+        {
+            Products = products,
+            ProductsCount = productsCount
+        };
+    }
+}

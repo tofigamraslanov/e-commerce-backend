@@ -11,12 +11,12 @@ public class ECommerceBackendDbContext : DbContext
     {
     }
 
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Order> Orders { get; set; }
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<File> Files { get; set; }
-    public DbSet<ProductImageFile> ProductImageFiles { get; set; }
-    public DbSet<InvoiceFile> InvoiceFiles { get; set; }
+    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<Customer> Customers { get; set; } = null!;
+    public DbSet<File> Files { get; set; } = null!;
+    public DbSet<ProductImageFile> ProductImageFiles { get; set; } = null!;
+    public DbSet<InvoiceFile> InvoiceFiles { get; set; } = null!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
