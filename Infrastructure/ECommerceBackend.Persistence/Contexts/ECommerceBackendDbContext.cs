@@ -1,11 +1,13 @@
 ﻿using ECommerceBackend.Domain.Entities;
 using ECommerceBackend.Domain.Entities.Common;
+using ECommerceBackend.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using File = ECommerceBackend.Domain.Entities.File;
 
 namespace ECommerceBackend.Persistence.Contexts;
 
-public class ECommerceBackendDbContext : DbContext
+public class ECommerceBackendDbContext : IdentityDbContext<AppUser, AppUserRole, string>
 {
     public ECommerceBackendDbContext(DbContextOptions options) : base(options)
     {

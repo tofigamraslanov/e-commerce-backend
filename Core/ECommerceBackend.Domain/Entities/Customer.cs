@@ -9,7 +9,7 @@ public class Customer : BaseEntity
         Orders = new HashSet<Order>();
     }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     public ICollection<Order> Orders { get; set; }
 }

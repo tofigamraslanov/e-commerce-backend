@@ -2,5 +2,10 @@
 
 public class ProductImageFile : File
 {
-    public ICollection<Product> Products { get; set; } = null!;
+    public ProductImageFile()
+    {
+        Products = new HashSet<Product>();
+    }
+
+    public ICollection<Product> Products { get; set; }
 }
