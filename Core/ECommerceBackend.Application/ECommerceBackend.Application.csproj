@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Abstractions\Storage\Local\" />
     <Folder Include="Abstractions\Storage\Azure\" />
+    <Folder Include="Features\AppUsers\Commands\LoginUser\" />
     <Folder Include="Features\ProductImageFiles\Commands\DeleteProductImage\" />
     <Folder Include="Features\ProductImageFiles\Queries\GetProductImages\" />
     <Folder Include="Features\Products\Commands\CreateProduct\" />
