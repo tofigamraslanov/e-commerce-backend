@@ -1,9 +1,4 @@
-﻿using ECommerceBackend.Application.Repositories;
-using ECommerceBackend.Application.RequestParameters;
-using ECommerceBackend.Application.ViewModels.Products;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using ECommerceBackend.Application.Abstractions.Storage;
+﻿using ECommerceBackend.Application.Abstractions.Storage;
 using ECommerceBackend.Application.Features.ProductImageFiles.Commands.DeleteProductImage;
 using ECommerceBackend.Application.Features.ProductImageFiles.Commands.UploadProductImages;
 using ECommerceBackend.Application.Features.ProductImageFiles.Queries.GetProductImages;
@@ -12,15 +7,18 @@ using ECommerceBackend.Application.Features.Products.Commands.DeleteProduct;
 using ECommerceBackend.Application.Features.Products.Commands.UpdateProduct;
 using ECommerceBackend.Application.Features.Products.Queries.GetAllProducts;
 using ECommerceBackend.Application.Features.Products.Queries.GetProductById;
-using ECommerceBackend.Domain.Entities;
+using ECommerceBackend.Application.Repositories;
+using ECommerceBackend.Application.RequestParameters;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using File = ECommerceBackend.Domain.Entities.File;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerceBackend.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductReadRepository _productReadRepository;

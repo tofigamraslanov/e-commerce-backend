@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Abstractions\Token\" />
     <Folder Include="Abstractions\Storage\Local\" />
     <Folder Include="Abstractions\Storage\Azure\" />
     <Folder Include="Features\AppUsers\Commands\LoginUser\" />
@@ -22,6 +23,7 @@
     <Folder Include="Features\Products\Queries\GetAllProducts\" />
     <Folder Include="Features\Products\Queries\GetProductById\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Options\Token\" />
     <Folder Include="Repositories\File\" />
     <Folder Include="Repositories\InvoiceFile\" />
     <Folder Include="Repositories\ProductImageFile\" />

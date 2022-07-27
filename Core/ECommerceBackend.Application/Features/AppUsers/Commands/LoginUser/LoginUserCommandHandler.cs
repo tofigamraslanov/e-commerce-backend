@@ -1,4 +1,5 @@
-﻿using ECommerceBackend.Application.Exceptions;
+﻿using ECommerceBackend.Application.Abstractions.Token;
+using ECommerceBackend.Application.Exceptions;
 using ECommerceBackend.Domain.Entities.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -9,11 +10,13 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, 
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly ITokenHandler _tokenHandler;
 
-    public LoginUserCommandHandler(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+    public LoginUserCommandHandler(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenHandler tokenHandler)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _tokenHandler = tokenHandler;
     }
 
     public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
@@ -23,13 +26,15 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, 
         if (user is null)
             throw new NotFoundUserException();
 
-       var signInResult= await _signInManager.CheckPasswordSignInAsync(user, request.Password,false);
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
-       if (signInResult.Succeeded)
-       {
-           // Authorization succeeded
-       }
+        if (!signInResult.Succeeded) throw new AuthenticationErrorException();
 
-       return new LoginUserCommandResponse();
+        // Authorization succeeded
+        var accessToken = _tokenHandler.CreateToken(5);
+        return new LoginUserSuccessCommandResponse
+        {
+            AccessToken = accessToken
+        };
     }
 }
