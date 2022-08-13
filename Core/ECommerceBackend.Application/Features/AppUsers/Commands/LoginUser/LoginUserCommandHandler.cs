@@ -31,10 +31,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, 
         if (!signInResult.Succeeded) throw new AuthenticationErrorException();
 
         // Authorization succeeded
-        var accessToken = _tokenHandler.CreateToken(5);
+        var token = _tokenHandler.CreateToken(5);
         return new LoginUserSuccessCommandResponse
         {
-            AccessToken = accessToken
+            Token = token
         };
     }
 }

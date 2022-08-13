@@ -8,7 +8,7 @@ public class LoginUserCommandResponse
 
 public class LoginUserSuccessCommandResponse : LoginUserCommandResponse
 {
-    public AccessToken AccessToken { get; set; } = null!;
+    public TokenDto Token { get; set; } = null!;
 }
 
 public class LoginUserErrorCommandResponse : LoginUserCommandResponse

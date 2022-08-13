@@ -4,5 +4,5 @@ namespace ECommerceBackend.Application.Abstractions.Token;
 
 public interface ITokenHandler
 {
-    AccessToken CreateToken(int expirationTimeInMinutes);
+    TokenDto CreateToken(int expirationTimeInMinutes);
 }

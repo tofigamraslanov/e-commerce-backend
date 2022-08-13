@@ -1,7 +1,7 @@
 ﻿namespace ECommerceBackend.Application.Dtos;
 
-public class AccessToken
+public class TokenDto
 {
-    public string Token { get; set; } = null!;
+    public string AccessToken { get; set; } = null!;
     public DateTime ExpirationTime { get; set; }
 }

@@ -17,31 +17,31 @@ namespace ECommerceBackend.Infrastructure.Services.Token
             _tokenOptions = tokenOptions.Value;
         }
 
-        public AccessToken CreateToken(int expirationTimeInMinutes)
+        public TokenDto CreateToken(int expirationTimeInMinutes)
         {
-            var accessToken = new AccessToken();
+            var token = new TokenDto();
 
-            // Security Key'in simmetrigini aliyoruz.
+            // Getting the symmetry of the security key.
             var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
 
-            // Sifrelenmis kimligi olusturuyoruz.
+            // Verifying the encrypted identity.
             var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
-            // Olusturalacak token ayarlarini veriyoruz.
-            accessToken.ExpirationTime = DateTime.UtcNow.AddMinutes(expirationTimeInMinutes);
+            // Giving the token settings to be created.
+            token.ExpirationTime = DateTime.UtcNow.AddMinutes(expirationTimeInMinutes);
 
             var securityToken = new JwtSecurityToken(
                 audience: _tokenOptions.Audience,
                 issuer: _tokenOptions.Issuer,
-                expires: accessToken.ExpirationTime,
+                expires: token.ExpirationTime,
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials
                 );
 
-            // Token olusturucu sinifindan bir instance alalim.
+            // Let's take an instance of the token generator class.
             var tokenHandler = new JwtSecurityTokenHandler();
-            accessToken.Token = tokenHandler.WriteToken(securityToken);
-            return accessToken;
+            token.AccessToken = tokenHandler.WriteToken(securityToken);
+            return token;
         }
     }
 }
