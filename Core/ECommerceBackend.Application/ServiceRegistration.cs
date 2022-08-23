@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ECommerceBackend.Application.Options.ExternalLogin;
 using ECommerceBackend.Application.Options.Token;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -10,8 +11,10 @@ public static class ServiceRegistration
 {
     public static void AddApplicationServices(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.Configure<TokenOptions>(configuration.GetSection(TokenOptions.SectionName));
-
         services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddHttpClient();
+
+        services.Configure<TokenOptions>(configuration.GetSection(TokenOptions.SectionName));
+        services.Configure<FacebookLoginOptions>(configuration.GetSection(FacebookLoginOptions.SectionName));
     }
 }
