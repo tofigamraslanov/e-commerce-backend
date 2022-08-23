@@ -2,7 +2,7 @@
 
 public class TokenOptions
 {
-    public const string Token = "AccessToken";
+    public const string SectionName = "Token";
 
     public string Audience { get; set; } = null!;
     public string Issuer { get; set; } = null!;

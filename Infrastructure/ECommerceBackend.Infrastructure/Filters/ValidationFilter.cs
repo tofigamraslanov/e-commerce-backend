@@ -10,8 +10,8 @@ public class ValidationFilter : IAsyncActionFilter
         if (!context.ModelState.IsValid)
         {
             var errors = context.ModelState
-                .Where(x => x.Value!.Errors.Any())
-                .ToDictionary(e => e.Key, e => e.Value!.Errors.Select(er => er.ErrorMessage))
+                .Where(x => x.Value.Errors.Any())
+                .ToDictionary(e => e.Key, e => e.Value.Errors.Select(er => er.ErrorMessage))
                 .ToArray();
 
             context.Result = new BadRequestObjectResult(errors);

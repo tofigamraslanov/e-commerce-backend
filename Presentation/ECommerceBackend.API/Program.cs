@@ -38,7 +38,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     var tokenOptions = builder
         .Configuration
-        .GetSection(TokenOptions.Token)
+        .GetSection(TokenOptions.SectionName)
         .Get<TokenOptions>();
 
     builder.Services

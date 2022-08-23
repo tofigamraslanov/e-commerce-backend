@@ -1,10 +1,10 @@
 ﻿using ECommerceBackend.Application.Abstractions.Token;
 using ECommerceBackend.Application.Dtos;
+using ECommerceBackend.Application.Options.Token;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using ECommerceBackend.Application.Options.Token;
 
 namespace ECommerceBackend.Infrastructure.Services.Token
 {
@@ -41,6 +41,7 @@ namespace ECommerceBackend.Infrastructure.Services.Token
             // Let's take an instance of the token generator class.
             var tokenHandler = new JwtSecurityTokenHandler();
             token.AccessToken = tokenHandler.WriteToken(securityToken);
+
             return token;
         }
     }

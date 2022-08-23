@@ -10,7 +10,7 @@ public static class ServiceRegistration
 {
     public static void AddApplicationServices(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.Configure<TokenOptions>(configuration.GetSection(TokenOptions.Token));
+        services.Configure<TokenOptions>(configuration.GetSection(TokenOptions.SectionName));
 
         services.AddMediatR(Assembly.GetExecutingAssembly());
     }
