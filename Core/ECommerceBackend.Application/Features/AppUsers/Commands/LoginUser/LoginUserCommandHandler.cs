@@ -1,4 +1,5 @@
-﻿using ECommerceBackend.Application.Abstractions.Token;
+﻿using ECommerceBackend.Application.Abstractions.Services.Authentication;
+using ECommerceBackend.Application.Abstractions.Token;
 using ECommerceBackend.Application.Exceptions;
 using ECommerceBackend.Domain.Entities.Identity;
 using MediatR;
@@ -8,31 +9,17 @@ namespace ECommerceBackend.Application.Features.AppUsers.Commands.LoginUser;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, LoginUserCommandResponse>
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
-    private readonly ITokenHandler _tokenHandler;
+    private readonly IInternalAuthService _internalAuthService;
 
-    public LoginUserCommandHandler(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenHandler tokenHandler)
+    public LoginUserCommandHandler(IInternalAuthService internalAuthService)
     {
-        _signInManager = signInManager;
-        _userManager = userManager;
-        _tokenHandler = tokenHandler;
+        _internalAuthService = internalAuthService;
     }
 
     public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByNameAsync(request.UserNameOrEmail) ?? await _userManager.FindByEmailAsync(request.UserNameOrEmail);
-
-        if (user is null)
-            throw new NotFoundUserException();
-
-        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-
-        if (!signInResult.Succeeded) throw new AuthenticationErrorException();
-
-        // Authorization succeeded
-        var token = _tokenHandler.CreateToken(5);
-        return new LoginUserSuccessCommandResponse
+        var token = await _internalAuthService.LoginAsync(request.UserNameOrEmail!, request.Password!, 15);
+        return new LoginUserSuccessCommandResponse()
         {
             Token = token
         };

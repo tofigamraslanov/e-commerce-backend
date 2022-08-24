@@ -1,7 +1,10 @@
-﻿using ECommerceBackend.Application.Repositories;
+﻿using ECommerceBackend.Application.Abstractions.Services;
+using ECommerceBackend.Application.Abstractions.Services.Authentication;
+using ECommerceBackend.Application.Repositories;
 using ECommerceBackend.Domain.Entities.Identity;
 using ECommerceBackend.Persistence.Contexts;
 using ECommerceBackend.Persistence.Repositories;
+using ECommerceBackend.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,5 +37,10 @@ public static class ServiceRegistration
         services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
         services.AddScoped<IProductImageFileReadRepository, ProductImageFileReadRepository>();
         services.AddScoped<IProductImageFileWriteRepository, ProductImageFileWriteRepository>();
+
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IExternalAuthService, AuthService>();
+        services.AddScoped<IInternalAuthService, AuthService>();
     }
 }

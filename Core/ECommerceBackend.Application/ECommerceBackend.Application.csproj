@@ -14,6 +14,7 @@
     <Folder Include="Abstractions\Token\" />
     <Folder Include="Abstractions\Storage\Local\" />
     <Folder Include="Abstractions\Storage\Azure\" />
+    <Folder Include="Dtos\User\" />
     <Folder Include="Features\AppUsers\Commands\LoginUser\" />
     <Folder Include="Features\AppUsers\Commands\GoogleLogin\" />
     <Folder Include="Features\AppUsers\Commands\FacebookLogin\" />
@@ -41,7 +42,6 @@
     <PackageReference Include="FluentValidation" Version="11.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.1" />
-    <PackageReference Include="Google.Apis.Auth" Version="1.57.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

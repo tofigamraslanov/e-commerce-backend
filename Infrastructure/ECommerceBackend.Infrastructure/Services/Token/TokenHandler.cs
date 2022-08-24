@@ -17,7 +17,7 @@ namespace ECommerceBackend.Infrastructure.Services.Token
             _tokenOptions = tokenOptions.Value;
         }
 
-        public TokenDto CreateToken(int expirationTimeInMinutes)
+        public TokenDto CreateToken(int expirationTimeInSeconds)
         {
             var token = new TokenDto();
 
@@ -28,7 +28,7 @@ namespace ECommerceBackend.Infrastructure.Services.Token
             var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
             // Giving the token settings to be created.
-            token.ExpirationTime = DateTime.UtcNow.AddMinutes(expirationTimeInMinutes);
+            token.ExpirationTime = DateTime.UtcNow.AddMinutes(expirationTimeInSeconds);
 
             var securityToken = new JwtSecurityToken(
                 audience: _tokenOptions.Audience,

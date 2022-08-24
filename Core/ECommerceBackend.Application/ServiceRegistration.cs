@@ -16,5 +16,6 @@ public static class ServiceRegistration
 
         services.Configure<TokenOptions>(configuration.GetSection(TokenOptions.SectionName));
         services.Configure<FacebookLoginOptions>(configuration.GetSection(FacebookLoginOptions.SectionName));
+        services.Configure<GoogleLoginOptions>(configuration.GetSection(GoogleLoginOptions.SectionName));
     }
 }
