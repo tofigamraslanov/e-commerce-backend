@@ -12,7 +12,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-
     builder.Services.AddApplicationServices(builder.Configuration);
     builder.Services.AddInfrastructureServices();
     builder.Services.AddPersistenceServices();
@@ -43,7 +42,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer("Admin",options =>
+        .AddJwtBearer("Admin", options =>
         {
             options.TokenValidationParameters = new()
             {
@@ -54,7 +53,8 @@ var builder = WebApplication.CreateBuilder(args);
 
                 ValidAudience = tokenOptions.Audience,
                 ValidIssuer = tokenOptions.Issuer,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey)),
+                LifetimeValidator = (before, expires, token, parameters) => expires != null && expires > DateTime.UtcNow
             };
         });
 }

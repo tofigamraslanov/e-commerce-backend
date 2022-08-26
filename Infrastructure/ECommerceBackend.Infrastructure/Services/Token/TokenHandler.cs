@@ -4,6 +4,7 @@ using ECommerceBackend.Application.Options.Token;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ECommerceBackend.Infrastructure.Services.Token
@@ -28,7 +29,7 @@ namespace ECommerceBackend.Infrastructure.Services.Token
             var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
             // Giving the token settings to be created.
-            token.ExpirationTime = DateTime.UtcNow.AddMinutes(expirationTimeInSeconds);
+            token.ExpirationTime = DateTime.UtcNow.AddSeconds(expirationTimeInSeconds);
 
             var securityToken = new JwtSecurityToken(
                 audience: _tokenOptions.Audience,
@@ -36,13 +37,22 @@ namespace ECommerceBackend.Infrastructure.Services.Token
                 expires: token.ExpirationTime,
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials
-                );
+            );
 
             // Let's take an instance of the token generator class.
             var tokenHandler = new JwtSecurityTokenHandler();
             token.AccessToken = tokenHandler.WriteToken(securityToken);
-
+            token.RefreshToken = CreateRefreshToken();
+            
             return token;
+        }
+
+        public string CreateRefreshToken()
+        {
+            var numbers = new byte[32];
+            using var random = RandomNumberGenerator.Create();
+            random.GetBytes(numbers);
+            return Convert.ToBase64String(numbers);
         }
     }
 }

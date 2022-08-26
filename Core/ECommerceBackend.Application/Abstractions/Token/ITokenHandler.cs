@@ -5,4 +5,5 @@ namespace ECommerceBackend.Application.Abstractions.Token;
 public interface ITokenHandler
 {
     TokenDto CreateToken(int expirationTimeInSeconds);
+    string CreateRefreshToken();
 }

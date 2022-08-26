@@ -5,4 +5,5 @@ namespace ECommerceBackend.Application.Abstractions.Services.Authentication;
 public interface IInternalAuthService
 {
     Task<TokenDto> LoginAsync(string userNameOrEmail, string password, int accessTokenLifeTimeInSeconds);
+    Task<TokenDto> RefreshTokenLoginAsync(string refreshToken);
 }
