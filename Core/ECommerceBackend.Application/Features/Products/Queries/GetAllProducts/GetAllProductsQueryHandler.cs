@@ -1,19 +1,24 @@
 ﻿using ECommerceBackend.Application.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ECommerceBackend.Application.Features.Products.Queries.GetAllProducts;
 
 public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQueryRequest, GetAllProductsQueryResponse>
 {
     private readonly IProductReadRepository _productReadRepository;
+    private readonly ILogger<GetAllProductsQueryHandler> _logger;
 
-    public GetAllProductsQueryHandler(IProductReadRepository productReadRepository)
+    public GetAllProductsQueryHandler(IProductReadRepository productReadRepository, ILogger<GetAllProductsQueryHandler> logger)
     {
         _productReadRepository = productReadRepository;
+        _logger = logger;
     }
 
     public async Task<GetAllProductsQueryResponse> Handle(GetAllProductsQueryRequest request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Get all products");
+        
         var response = new GetAllProductsQueryResponse();
         await Task.Run(() =>
         {

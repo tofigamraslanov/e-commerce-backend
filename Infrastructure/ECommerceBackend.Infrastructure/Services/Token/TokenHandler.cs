@@ -4,8 +4,10 @@ using ECommerceBackend.Application.Options.Token;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using ECommerceBackend.Domain.Entities.Identity;
 
 namespace ECommerceBackend.Infrastructure.Services.Token
 {
@@ -18,7 +20,7 @@ namespace ECommerceBackend.Infrastructure.Services.Token
             _tokenOptions = tokenOptions.Value;
         }
 
-        public TokenDto CreateToken(int expirationTimeInSeconds)
+        public TokenDto CreateToken(int expirationTimeInSeconds, AppUser user)
         {
             var token = new TokenDto();
 
@@ -36,14 +38,18 @@ namespace ECommerceBackend.Infrastructure.Services.Token
                 issuer: _tokenOptions.Issuer,
                 expires: token.ExpirationTime,
                 notBefore: DateTime.UtcNow,
-                signingCredentials: signingCredentials
+                signingCredentials: signingCredentials,
+                claims: new List<Claim>()
+                {
+                    new(ClaimTypes.Name, user.UserName)
+                }
             );
 
             // Let's take an instance of the token generator class.
             var tokenHandler = new JwtSecurityTokenHandler();
             token.AccessToken = tokenHandler.WriteToken(securityToken);
             token.RefreshToken = CreateRefreshToken();
-            
+
             return token;
         }
 

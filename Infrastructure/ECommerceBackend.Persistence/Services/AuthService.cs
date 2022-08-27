@@ -47,7 +47,7 @@ public class AuthService : IAuthService
         if (!signInResult.Succeeded) throw new AuthenticationErrorException();
 
         // Authorization succeeded
-        var token = _tokenHandler.CreateToken(accessTokenLifeTimeInSeconds);
+        var token = _tokenHandler.CreateToken(accessTokenLifeTimeInSeconds, user);
         await _userService.UpdateRefreshToken(user, token.RefreshToken!, token.ExpirationTime, 15);
 
         return token;
@@ -59,12 +59,12 @@ public class AuthService : IAuthService
 
         if (user != null && user.RefreshTokenEndDate > DateTime.UtcNow)
         {
-            var token = _tokenHandler.CreateToken(15);
+            var token = _tokenHandler.CreateToken(15, user);
             await _userService.UpdateRefreshToken(user, token.RefreshToken!, token.ExpirationTime, 15);
             return token;
         }
         else
-           throw new NotFoundUserException();
+            throw new NotFoundUserException();
     }
 
     public async Task<TokenDto> GoogleLoginAsync(string idToken, int accessTokenLifeTimeInSeconds)
@@ -139,7 +139,7 @@ public class AuthService : IAuthService
         {
             await _userManager.AddLoginAsync(user, userLoginInfo);
 
-            var token = _tokenHandler.CreateToken(accessTokenLifeTimeInSeconds);
+            var token = _tokenHandler.CreateToken(accessTokenLifeTimeInSeconds, user);
             await _userService.UpdateRefreshToken(user, token.RefreshToken!, token.ExpirationTime, 15);
 
             return token;

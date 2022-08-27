@@ -9,6 +9,11 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ECommerceBackend.API.Configurations.ColumnWriters;
+using Microsoft.AspNetCore.HttpLogging;
+using Serilog;
+using Serilog.Context;
+using Serilog.Sinks.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -26,6 +31,38 @@ var builder = WebApplication.CreateBuilder(args);
                 policy.WithOrigins("https://localhost:4200", "http://localhost:4200")
                     .AllowAnyHeader()
                     .AllowAnyMethod()));
+
+    var logger = new LoggerConfiguration()
+        .MinimumLevel.Information()
+        .WriteTo.Console()
+        .WriteTo.File("Logs/Log.txt")
+        .WriteTo.PostgreSQL(
+            builder.Configuration.GetConnectionString("PostgreSQL"),
+            "Logs",
+            needAutoCreateTable: true,
+            columnOptions: new Dictionary<string, ColumnWriterBase>()
+            {
+                { "message", new RenderedMessageColumnWriter() },
+                { "message_template", new MessageTemplateColumnWriter() },
+                { "level", new LevelColumnWriter() },
+                { "timestamp", new TimestampColumnWriter() },
+                { "exception", new ExceptionColumnWriter() },
+                { "log_event", new LogEventSerializedColumnWriter() },
+                { "user_name", new UserNameColumnWriter() },
+            })
+        .WriteTo.Seq(builder.Configuration["Seq:ServerURL"])
+        .Enrich.FromLogContext()
+        .CreateLogger();
+    builder.Host.UseSerilog(logger);
+
+    builder.Services.AddHttpLogging(logging =>
+    {
+        logging.LoggingFields = HttpLoggingFields.All;
+        logging.RequestHeaders.Add("sec-ch-ua");
+        logging.MediaTypeOptions.AddText("application/javascript");
+        logging.RequestBodyLogLimit = 4096;
+        logging.ResponseBodyLogLimit = 4096;
+    });
 
     builder.Services
         .AddControllers(options => options.Filters.Add<ValidationFilter>())
@@ -69,6 +106,10 @@ var app = builder.Build();
 
     app.UseStaticFiles();
 
+    app.UseSerilogRequestLogging();
+
+    app.UseHttpLogging();
+
     app.UseCors();
 
     app.UseHttpsRedirection();
@@ -76,6 +117,13 @@ var app = builder.Build();
     app.UseAuthentication();
 
     app.UseAuthorization();
+
+    app.Use(async (context, next) =>
+    {
+        var userName = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+        LogContext.PushProperty("user_name", userName);
+        await next();
+    });
 
     app.MapControllers();
 
