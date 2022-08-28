@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ECommerceBackend.API.Configurations.ColumnWriters;
+using ECommerceBackend.API.Extensions;
 using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
 using Serilog.Context;
@@ -103,6 +104,8 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
 
     app.UseStaticFiles();
 

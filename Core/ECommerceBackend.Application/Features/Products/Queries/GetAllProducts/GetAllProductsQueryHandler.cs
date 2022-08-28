@@ -18,7 +18,7 @@ public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQueryReq
     public async Task<GetAllProductsQueryResponse> Handle(GetAllProductsQueryRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Get all products");
-        
+        throw new Exception("Error happened");
         var response = new GetAllProductsQueryResponse();
         await Task.Run(() =>
         {
