@@ -7,7 +7,7 @@ namespace ECommerceBackend.API.Extensions;
 
 public static class ConfigureExceptionHandlerExtension
 {
-    public static void ConfigureExceptionHandler<T>(this WebApplication app, ILogger<T> logger)
+    public static void UseGlobalExceptionHandler<T>(this WebApplication app, ILogger<T> logger)
     {
         app.UseExceptionHandler(builder =>
         {

@@ -105,7 +105,7 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
-    app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
+    app.UseGlobalExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
 
     app.UseStaticFiles();
 

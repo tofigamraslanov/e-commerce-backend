@@ -60,7 +60,7 @@ public class AuthService : IAuthService
         if (user != null && user.RefreshTokenEndDate > DateTime.UtcNow)
         {
             var token = _tokenHandler.CreateToken(15, user);
-            await _userService.UpdateRefreshToken(user, token.RefreshToken!, token.ExpirationTime, 15);
+            await _userService.UpdateRefreshToken(user, token.RefreshToken!, token.ExpirationTime, 300);
             return token;
         }
         else
