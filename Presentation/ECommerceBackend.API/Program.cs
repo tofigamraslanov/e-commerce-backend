@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ECommerceBackend.API.Configurations.ColumnWriters;
 using ECommerceBackend.API.Extensions;
+using ECommerceBackend.SignalR;
+using ECommerceBackend.SignalR.Hubs;
 using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
 using Serilog.Context;
@@ -21,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddApplicationServices(builder.Configuration);
     builder.Services.AddInfrastructureServices();
     builder.Services.AddPersistenceServices();
+    builder.Services.AddSignalRServices();
 
     // builder.Services.AddStorage(StorageType.Local);
     // builder.Services.AddStorage<LocalStorage>();
@@ -31,7 +34,8 @@ var builder = WebApplication.CreateBuilder(args);
             options.AddDefaultPolicy(policy =>
                 policy.WithOrigins("https://localhost:4200", "http://localhost:4200")
                     .AllowAnyHeader()
-                    .AllowAnyMethod()));
+                    .AllowAnyMethod()
+                    .AllowCredentials()));
 
     var logger = new LoggerConfiguration()
         .MinimumLevel.Information()
@@ -129,6 +133,8 @@ var app = builder.Build();
     });
 
     app.MapControllers();
+
+    app.MapHubs();
 
     app.Run();
 }
