@@ -7,5 +7,6 @@ public class ProductImageFile : File
         Products = new HashSet<Product>();
     }
 
+    public bool Showcase { get; set; }
     public ICollection<Product> Products { get; set; }
 }
